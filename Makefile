@@ -7,16 +7,16 @@
 
 CC   = gcc -Wall
 
-all: ex7
+all: letters
 
-operation07.o: operation07.c operation07.h
-	$(CC) -c operation07.c
+operation.o: operation.c operation.h
+	$(CC) -c operation.c
 
-inout07.o: inout07.c inout07.h
-	$(CC) -c inout07.c
+inout.o: inout.c inout.h
+	$(CC) -c inout.c
 
-ex7: ex7.c inout07.o operation07.o
-	$(CC) ex7.c inout07.o operation07.o -o ex7
+letters: letters.c inout.o operation.o
+	$(CC) letters.c inout.o operation.o -o letters
 
 clean:
-	rm -f ex7 *.o *~ *.bak
+	rm -f letters *.o *~ *.bak
