@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include "inout07.h"
+#include "inout.h"
 
 int confirm() {
   char ans;
