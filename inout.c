@@ -69,5 +69,33 @@ void headline (char *msg, char param, int line_size) {
   printf("%c", param);
   printf("\n");
   
-  return;     // exits thefunction
+  return;    
+}
+
+void get_string(char *str, int max, char *msg) {
+  int incorrect = 1;
+  char input[256];
+
+  do {
+    fprintf(stdout, "%s (%d char) : ", msg, (max-1));
+    fgets(input, 255, stdin);
+    
+    if (strlen(input) == 1) {
+      fprintf(stdout, "Null length\n");
+    }
+
+    else if (strlen(input) > max) {
+      fprintf(stdout, "Excessive length\n");
+    }
+
+    else {
+      strcpy(str, input);
+      incorrect = 0;
+    }
+
+  }
+  while (incorrect);
+
+  return;
+
 }
