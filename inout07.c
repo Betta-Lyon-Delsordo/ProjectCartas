@@ -4,19 +4,41 @@
 #include "inout.h"
 
 int confirm() {
-  char ans;
+  char ans, buffer[256], rubbish[256];
+
+  int ret, a, b = 1;
 
   do {
       printf("Are you sure you want to exit? (y/n): ");
+
+      fgets (buffer, 256, stdin);
   
-      scanf(" %c", &ans);
+      a = sscanf(buffer, "%c %s", &ans, rubbish);
 
       ans = tolower(ans);
-      
-       } while ((ans != 'n') && (ans != 'y'));
-  
-  return (ans == 'y');
- 
+
+      if (a!=1)
+	b = 0;
+
+
+      else{
+	switch (ans){
+
+	case 'y':
+	  ret=1;
+	  b = 1;
+	  break;
+	case 'n':
+	  ret=0;
+	  b=1;
+	  break;
+	default:
+	  b=0;
+	  break;
+      }}
+       } while (b==0);
+
+  return ret;
 }
 
 
@@ -49,5 +71,3 @@ void headline (char *msg, char param, int line_size) {
   
   return;     // exits thefunction
 }
-
-
