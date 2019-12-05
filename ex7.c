@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include "inout07.h"
-#include "operation07.h"
+#include "inout.h"
+#include "operation.h"
 
 #define LINE_SIZE 60
 #define CHAR '#'
