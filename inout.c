@@ -4,13 +4,13 @@
 #include <stdlib.h>
 #include "inout.h"
 
-int confirm() {
+int confirm(char *msg) {
   char ans, buffer[256], rubbish[256];
 
   int ret, a, b = 1;
 
   do {
-      printf("Are you sure you want to exit? (y/n): ");
+    fprintf(stdout, "%s", msg);
 
       fgets (buffer, 256, stdin);
   
@@ -41,7 +41,6 @@ int confirm() {
 
   return ret;
 }
-
 
 void flat(char param, int line_size){
   int k;
