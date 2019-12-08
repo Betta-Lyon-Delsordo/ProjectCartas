@@ -78,7 +78,7 @@ void get_string(char *str, int max, char *msg) {
   char input[256];
 
   do {
-    fprintf(stdout, "%s (%d char) : ", msg, (max-1));
+    fprintf(stdout, "%s (1-%d char): ", msg, max); 
     fgets(input, 255, stdin);
     
     if (strlen(input) == 1) {
