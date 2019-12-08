@@ -1,7 +1,7 @@
 # ******************************************************
 #
 # Computer Programming I. Academic Year 2019-2020
-# Compilation of exercise #6 in the introduction to project session
+# Final Project for Betta and Eloy
 #
 # ******************************************************
 
