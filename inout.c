@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #include "inout.h"
 
 int confirm() {
@@ -98,4 +99,27 @@ void get_string(char *str, int max, char *msg) {
 
   return;
 
+}
+
+int get_integer(int max, char *msg) {
+  int n;
+  char buffer[256], *ptr, *errors;
+  int incorrect = 1;
+ 
+  do {
+    fprintf(stdout, "%s [1-%d]: ", msg, max);
+     errors = fgets(buffer, 256, stdin);
+     if (errors != NULL) {
+       //convert string to integer
+       n = strtol(buffer, &ptr, 10); //returns 0 if non-integer input
+        if ((n <= max) && (n >= 1)) {
+          incorrect = 0;
+	  break;
+         }
+        }
+     fprintf(stdout, "Wrong value\n");
+  } while (incorrect);
+ 
+  return n;
+  
 }
