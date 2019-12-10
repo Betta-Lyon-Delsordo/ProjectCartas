@@ -23,8 +23,8 @@ int main(){
   tMessage Messages[200];
   int n_msg = 0;
 
-  s_init(tSubscriber Subscribers, int &n_sub);
-  m_init(tMessage Messages, int &n_msg);
+  s_init(Subscribers, &n_sub);
+  m_init(Messages, &n_msg);
   
 
 
@@ -39,7 +39,7 @@ int main(){
   do {
     
     do {
-    printf("\nEnter your selection:\nR) Register a new subscriber\nW) Write a message\nL) List the messages for a subscriber\nE) Erase a message\nX) Leave the program\n");
+    printf("\nR) Register a new subscriber\nW) Write a message\nL) List the messages for a subscriber\nE) Erase a message\nU) Unregister a subscriber\n\nX) Exit the program\n");
     printf("\nChoose an option: ");
     fgets (buffer, 256, stdin);
 
@@ -70,6 +70,9 @@ int main(){
       break;
     case 'E':
       m_erase();
+      break;
+    case 'U':
+      s_unregister();
       break;
     default:
       printf("You have chosen an invalid option.\n");

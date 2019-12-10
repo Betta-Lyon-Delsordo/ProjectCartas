@@ -26,11 +26,22 @@ int s_init(tSubscriber *Subscribers, int *n_sub) {
 
 int m_init(tMessage *Messages, int *n_msg) {
   FILE *file;
+  char buffer[256], text[200];
+  int sender, receiver;
   file = fopen("mensajes.txt", "r");
   if (file != NULL) {
     //Read messages
+    while (fgets(buffer, 256, file) != NULL) {
+      
+      sscanf(buffer, "%d %d %s", &sender, &receiver, text);
+      Messages[*n_msg].sender = sender;
+      Messages[*n_msg].receiver = receiver;
+      strcpy(Messages[*n_msg].text, text);
+      (*n_msg) ++;
+    }
     fclose(file);
   }
+  
   return 0;
 }
 
@@ -54,3 +65,7 @@ int m_erase() {
   return 0;
 }
 
+int s_unregister() {
+    printf("You have chosen unregistering.\n");
+    return 0;
+}
