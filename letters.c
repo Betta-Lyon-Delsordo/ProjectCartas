@@ -13,14 +13,25 @@ int main(){   //main function
   char op, buffer[256], rubbish[256];
   int a;
   
-  //Defining the subscriber type
+  //Defining the Subscriber type
   typedef struct aSubscriber {
+    int identity;
+    int count;
     char name[20];
-    int id;
   } tSubscriber;
   
   //Setting up the Subscribers table
   tSubscriber Subscribers[200];
+
+  //Defining the Message type
+  typedef struct aMessage {
+    int sender;
+    int receiver;
+    char text[200];
+  } tMessage;
+
+  //Setting up the Messages table
+  tMessage Messages[200];
   
   
   flat(CHAR, LINE_SIZE);  
