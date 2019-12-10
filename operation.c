@@ -107,8 +107,32 @@ int m_write(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg
   return 0;
 }
 
-int m_list() {
-  printf("You have chosen listing.\n");
+int m_list(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg) {
+  int ID, i;
+  int n = 0;
+  char name[20];
+  printf("List\n\n");
+  if (*n_sub == 0) {
+    printf("No subscribers yet\n\n");
+    return -1;
+  }
+  get_string(name, 15, "Receiver's name");
+  for(i=0;i<(*n_sub);i++) {
+    if(Subscribers[i].name == name) {
+      n = 1;
+      ID = Subscribers[i].identity;
+    }
+  }
+  if(n == 0) {
+    printf("Subscriber not found\n\n");
+    return -1;
+  }
+  printf("Messages for %s:\n", name);
+  for(i=0;i<(*n_msg);i++){
+    if(Messages[i].receiver == ID){
+      display_short(Messages[i]);
+    }
+  }
   return 0;
 }
 
