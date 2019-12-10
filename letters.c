@@ -10,7 +10,9 @@
 
 
 int main(){   //main function
-  char op;
+  char op, buffer[256], rubbish[256];
+  int a;
+  
   
   flat(CHAR, LINE_SIZE);  
   headline (TITLE, CHAR, LINE_SIZE);
@@ -21,7 +23,13 @@ int main(){   //main function
     do {
     printf("\nEnter your selection:\nR) Register a new subscriber\nW) Write a message\nL) List the messages for a subscriber\nE) Erase a message\nX) Leave the program\n");
     printf("\nChoose an option: ");
-    scanf(" %c", &op);
+    fgets (buffer, 256, stdin);
+  
+    a = sscanf(buffer, "%c %s", &op, rubbish);
+    if (a != 1) {
+      op = 'Z'; //To trigger invalid option
+    }
+      
     printf("\n");
 
     op = toupper(op);
@@ -51,8 +59,9 @@ int main(){   //main function
 
     
     
-  } while (confirm () == 0);
+  } while (confirm ("Are you sure you want to exit? (y/n): ") == 0);
 
   
-  return 0;    //exits main() with 0 value
+  return 0;   
 }
+
