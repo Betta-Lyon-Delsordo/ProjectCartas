@@ -12,8 +12,10 @@ int confirm(char *msg) {
 
   do {
     fprintf(stdout, "%s", msg);
+ 
 
       fgets (buffer, 256, stdin);
+      printf("\n");
   
       a = sscanf(buffer, "%c %s", &ans, rubbish);
 

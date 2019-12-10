@@ -75,14 +75,18 @@ int main(){
       s_unregister();
       break;
     default:
-      printf("You have chosen an invalid option.\n");
+      printf("You have chosen an invalid option\n");
       break;
     }
   } while (op != 'X' );
 
+    printf("Exit\n\n");
+
     
     
   } while (confirm ("Are you sure you want to exit? (y/n): ") == 0);
+
+  p_exit(Subscribers, &n_sub, Messages, &n_msg);
 
   
   return 0;   
