@@ -13,6 +13,15 @@ int main(){   //main function
   char op, buffer[256], rubbish[256];
   int a;
   
+  //Defining the subscriber type
+  typedef struct aSubscriber {
+    char name[20];
+    int id;
+  } tSubscriber;
+  
+  //Setting up the Subscribers table
+  tSubscriber Subscribers[200];
+  
   
   flat(CHAR, LINE_SIZE);  
   headline (TITLE, CHAR, LINE_SIZE);
@@ -24,7 +33,9 @@ int main(){   //main function
     printf("\nEnter your selection:\nR) Register a new subscriber\nW) Write a message\nL) List the messages for a subscriber\nE) Erase a message\nX) Leave the program\n");
     printf("\nChoose an option: ");
     fgets (buffer, 256, stdin);
-  
+
+    
+    //fix for printing confirm() twice
     a = sscanf(buffer, "%c %s", &op, rubbish);
     if (a != 1) {
       op = 'Z'; //To trigger invalid option
