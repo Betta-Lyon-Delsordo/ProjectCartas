@@ -63,8 +63,47 @@ int s_register(tSubscriber *Subscribers, int *n_sub, int *max_ID) {
   return 0;
 }
 
-int m_write() {
-  printf("You have chosen writing.\n");
+int m_write(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg, int *max_ID) {
+  int i, sender, receiver;
+  int s = 0;
+  int r = 0;
+  char text[200];
+  printf("Write\n\n");
+  if (*n_sub == 0) {
+    printf("No subscribers yet\n\n");
+    return -1;
+  }
+  sender = get_integer(*max_ID, "Sender's identity");
+  for(i=0;i<(*n_sub);i++) {
+    if(Subscribers[i].identity == sender){
+      s = 1;
+      break;
+    }
+  }
+  if(s==0){
+    printf("Subscriber not found\n\n");
+    return -1;
+  }
+  receiver = get_integer(*max_ID, "Receiver's identity");
+  for(i=0;i<(*n_sub);i++) {
+    if(Subscribers[i].identity == receiver){
+      r = 1;
+      (Subscribers[i].count)++;
+      break;
+    }
+  }
+  if(r==0){
+    printf("Subscriber not found\n\n");
+    return -1;
+  }
+  get_string(text, 100, "Message text");
+  Messages[*n_msg].sender = sender;
+  Messages[*n_msg].receiver = receiver;
+  strcpy(Messages[*n_msg].text, text);
+  printf("Message registered:\n");
+  display_extended(Messages[*n_msg]);
+  (*n_msg)++;
+    
   return 0;
 }
 

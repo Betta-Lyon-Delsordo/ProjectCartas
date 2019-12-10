@@ -112,6 +112,7 @@ int get_integer(int max, char *msg) {
   do {
     fprintf(stdout, "%s [1-%d]: ", msg, max);
      errors = fgets(buffer, 256, stdin);
+     fprintf(stdout, "\n");
      if (errors != NULL) {
        //convert string to integer
        n = strtol(buffer, &ptr, 10); //returns 0 if non-integer input
@@ -120,7 +121,7 @@ int get_integer(int max, char *msg) {
 	  break;
          }
         }
-     fprintf(stdout, "Wrong value\n");
+     fprintf(stdout, "Wrong value\n\n");
   } while (incorrect);
  
   return n;
