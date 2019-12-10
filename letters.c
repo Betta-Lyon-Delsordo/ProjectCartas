@@ -12,6 +12,7 @@
 int main(){   
   char op, buffer[256], rubbish[256];
   int a;
+  int max_ID = 0;
   
   
   //Setting up the Subscribers table
@@ -23,7 +24,7 @@ int main(){
   tMessage Messages[200];
   int n_msg = 0;
 
-  s_init(Subscribers, &n_sub);
+  s_init(Subscribers, &n_sub, &max_ID);
   m_init(Messages, &n_msg);
   
 
@@ -60,7 +61,7 @@ int main(){
       break;
     
     case 'R':
-      s_register();
+      s_register(Subscribers, &n_sub, &max_ID);
       break;
     case 'W':
       m_write();

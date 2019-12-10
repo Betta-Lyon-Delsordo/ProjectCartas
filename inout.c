@@ -82,13 +82,14 @@ void get_string(char *str, int max, char *msg) {
   do {
     fprintf(stdout, "%s (1-%d char): ", msg, max); 
     fgets(input, 255, stdin);
+    fprintf(stdout, "\n");
     
     if (strlen(input) == 1) {
-      fprintf(stdout, "Null length\n");
+      fprintf(stdout, "Null length\n\n");
     }
 
     else if (strlen(input) > max) {
-      fprintf(stdout, "Excessive length\n");
+      fprintf(stdout, "Excessive length\n\n");
     }
 
     else {

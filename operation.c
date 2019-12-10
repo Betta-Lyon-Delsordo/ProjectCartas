@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include "operation.h"
+#include "inout.h"
 
-int s_init(tSubscriber *Subscribers, int *n_sub) {
+int s_init(tSubscriber *Subscribers, int *n_sub, int *max_ID) {
   FILE *file;
   char buffer[256], name[20];
   int identity, count;
@@ -12,6 +13,9 @@ int s_init(tSubscriber *Subscribers, int *n_sub) {
     while (fgets(buffer, 256, file) != NULL) {
       
       sscanf(buffer, "%d %d %s", &identity, &count, name);
+      if (identity > *max_ID) {
+	*max_ID = identity;
+      }
       Subscribers[*n_sub].identity = identity;
       Subscribers[*n_sub].count = count;
       strcpy(Subscribers[*n_sub].name, name);
@@ -45,8 +49,17 @@ int m_init(tMessage *Messages, int *n_msg) {
   return 0;
 }
 
-int s_register() {
-  printf("You have chosen registering.\n");
+int s_register(tSubscriber *Subscribers, int *n_sub, int *max_ID) {
+  char name[20];
+  int identity = ++(*max_ID);
+  printf("Register\n\n");
+  get_string(name, 15, "Subscriber's name");
+  Subscribers[*n_sub].identity = identity;
+  Subscribers[*n_sub].count = 0;
+  strcpy(Subscribers[*n_sub].name, name);
+  printf("Subscriber registered:\n");
+  display_subscriber(Subscribers[*n_sub]);
+  (*n_sub) ++;
   return 0;
 }
 
