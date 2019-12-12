@@ -23,7 +23,7 @@ int m_write();
 int m_list();
 int m_erase();
 int s_unregister();
-int p_exit();
+int p_exit(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg);
 
 
 

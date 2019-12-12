@@ -26,11 +26,22 @@ int s_init(tSubscriber *Subscribers, int *n_sub) {
 
 int m_init(tMessage *Messages, int *n_msg) {
   FILE *file;
+  char buffer[256], text[200];
+  int sender, receiver;
   file = fopen("mensajes.txt", "r");
   if (file != NULL) {
     //Read messages
+    while (fgets(buffer, 256, file) != NULL) {
+      
+      sscanf(buffer, "%d %d %s", &sender, &receiver, text);
+      Messages[*n_msg].sender = sender;
+      Messages[*n_msg].receiver = receiver;
+      strcpy(Messages[*n_msg].text, text);
+      (*n_msg) ++;
+    }
     fclose(file);
   }
+  
   return 0;
 }
 
@@ -54,3 +65,32 @@ int m_erase() {
   return 0;
 }
 
+int s_unregister() {
+    printf("You have chosen unregistering.\n");
+    return 0;
+}
+
+int p_exit(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg) {
+  FILE *s_file;
+  FILE *m_file;
+  char buffer[256];
+  int i;
+  //Subscribers
+  s_file = fopen("abonados.txt", "w");
+  for (i=0; i<(*n_sub); i++) {
+    sprintf(buffer, "%d %d %s", Subscribers[i].identity, Subscribers[i].count, Subscribers[i].name);
+    fputs(buffer, s_file);
+  }
+  fclose(s_file);
+  
+  //Messages
+  m_file = fopen("mensajes.txt", "w");
+  for (i=0; i<(*n_msg); i++) {
+    sprintf(buffer, "%d %d %s", Messages[i].sender, Messages[i].receiver, Messages[i].text);
+    fputs(buffer, m_file);
+  }
+  fclose(m_file);
+  
+  
+  return 0;
+}
