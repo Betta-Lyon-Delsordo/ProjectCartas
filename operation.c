@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include "operation.h"
+#include "inout.h"
 
-int s_init(tSubscriber *Subscribers, int *n_sub) {
+int s_init(tSubscriber *Subscribers, int *n_sub, int *max_ID) {
   FILE *file;
   char buffer[256], name[20];
   int identity, count;
@@ -12,6 +13,9 @@ int s_init(tSubscriber *Subscribers, int *n_sub) {
     while (fgets(buffer, 256, file) != NULL) {
       
       sscanf(buffer, "%d %d %s", &identity, &count, name);
+      if (identity > *max_ID) {
+	*max_ID = identity;
+      }
       Subscribers[*n_sub].identity = identity;
       Subscribers[*n_sub].count = count;
       strcpy(Subscribers[*n_sub].name, name);
@@ -45,18 +49,90 @@ int m_init(tMessage *Messages, int *n_msg) {
   return 0;
 }
 
-int s_register() {
-  printf("You have chosen registering.\n");
+int s_register(tSubscriber *Subscribers, int *n_sub, int *max_ID) {
+  char name[20];
+  int identity = ++(*max_ID);
+  printf("Register\n\n");
+  get_string(name, 15, "Subscriber's name");
+  Subscribers[*n_sub].identity = identity;
+  Subscribers[*n_sub].count = 0;
+  strcpy(Subscribers[*n_sub].name, name);
+  printf("Subscriber registered:\n");
+  display_subscriber(Subscribers[*n_sub]);
+  (*n_sub) ++;
   return 0;
 }
 
-int m_write() {
-  printf("You have chosen writing.\n");
+int m_write(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg, int *max_ID) {
+  int i, sender, receiver;
+  int s = 0;
+  int r = 0;
+  char text[200];
+  printf("Write\n\n");
+  if (*n_sub == 0) {
+    printf("No subscribers yet\n\n");
+    return -1;
+  }
+  sender = get_integer(*max_ID, "Sender's identity");
+  for(i=0;i<(*n_sub);i++) {
+    if(Subscribers[i].identity == sender){
+      s = 1;
+      break;
+    }
+  }
+  if(s==0){
+    printf("Subscriber not found\n\n");
+    return -1;
+  }
+  receiver = get_integer(*max_ID, "Receiver's identity");
+  for(i=0;i<(*n_sub);i++) {
+    if(Subscribers[i].identity == receiver){
+      r = 1;
+      (Subscribers[i].count)++;
+      break;
+    }
+  }
+  if(r==0){
+    printf("Subscriber not found\n\n");
+    return -1;
+  }
+  get_string(text, 100, "Message text");
+  Messages[*n_msg].sender = sender;
+  Messages[*n_msg].receiver = receiver;
+  strcpy(Messages[*n_msg].text, text);
+  printf("Message registered:\n");
+  display_extended(Messages[*n_msg]);
+  (*n_msg)++;
+    
   return 0;
 }
 
-int m_list() {
-  printf("You have chosen listing.\n");
+int m_list(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg) {
+  int ID, i;
+  int n = 0;
+  char name[20];
+  printf("List\n\n");
+  if (*n_sub == 0) {
+    printf("No subscribers yet\n\n");
+    return -1;
+  }
+  get_string(name, 15, "Receiver's name");
+  for(i=0;i<(*n_sub);i++) {
+    if(Subscribers[i].name == name) {
+      n = 1;
+      ID = Subscribers[i].identity;
+    }
+  }
+  if(n == 0) {
+    printf("Subscriber not found\n\n");
+    return -1;
+  }
+  printf("Messages for %s:\n", name);
+  for(i=0;i<(*n_msg);i++){
+    if(Messages[i].receiver == ID){
+      display_short(Messages[i]);
+    }
+  }
   return 0;
 }
 

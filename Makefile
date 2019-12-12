@@ -9,7 +9,7 @@ CC   = gcc -Wall
 
 all: letters
 
-operation.o: operation.c operation.h
+operation.o: operation.c operation.h inout.h 
 	$(CC) -c operation.c
 
 inout.o: inout.c inout.h operation.h
