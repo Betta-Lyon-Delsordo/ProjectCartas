@@ -5,33 +5,31 @@
 #include "operation.h"
 
 #define LINE_SIZE 60
-#define CHAR '#'
-#define TITLE "PROGRAMA"
+#define CHAR '+'
+#define TITLE "CARTAS"
 
 
-int main(){   //main function
+int main(){   
   char op, buffer[256], rubbish[256];
   int a;
   
-  //Defining the Subscriber type
-  typedef struct aSubscriber {
-    int identity;
-    int count;
-    char name[20];
-  } tSubscriber;
   
   //Setting up the Subscribers table
   tSubscriber Subscribers[200];
+  int n_sub = 0;
 
-  //Defining the Message type
-  typedef struct aMessage {
-    int sender;
-    int receiver;
-    char text[200];
-  } tMessage;
 
   //Setting up the Messages table
   tMessage Messages[200];
+  int n_msg = 0;
+
+  s_init(tSubscriber Subscribers, int &n_sub);
+  m_init(tMessage Messages, int &n_msg);
+  
+
+
+
+  
   
   
   flat(CHAR, LINE_SIZE);  
@@ -86,4 +84,3 @@ int main(){   //main function
   
   return 0;   
 }
-
