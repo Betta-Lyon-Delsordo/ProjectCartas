@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "inout.h"
+#include "operation.h"
 
 int confirm(char *msg) {
   char ans, buffer[256], rubbish[256];
@@ -120,5 +121,21 @@ int get_integer(int max, char *msg) {
   } while (incorrect);
  
   return n;
-  
+}
+
+void display_subscriber(tSubscriber aSubscriber) {
+  fprintf(stdout,"#%3d:%15s\n", aSubscriber.identity, aSubscriber.name);
+  return;
+}
+
+void display_extended(tMessage aMessage) {
+  fprintf(stdout,"> Sender:  %d\n", aMessage.sender);
+  fprintf(stdout,"> Receiver:  %d\n", aMessage.receiver);
+  fprintf(stdout,"> Text:  %s\n", aMessage.text);
+  return;
+}
+
+void display_short(tMessage aMessage) {
+  fprintf(stdout,"#%3d:%3d:%12s\n", aMessage.sender, aMessage.receiver, aMessage.text);
+  return;
 }

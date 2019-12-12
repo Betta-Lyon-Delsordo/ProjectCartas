@@ -12,7 +12,7 @@ all: letters
 operation.o: operation.c operation.h
 	$(CC) -c operation.c
 
-inout.o: inout.c inout.h
+inout.o: inout.c inout.h operation.h
 	$(CC) -c inout.c
 
 letters: letters.c inout.o operation.o
