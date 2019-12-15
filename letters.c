@@ -70,7 +70,7 @@ int main(){
       m_list(Subscribers, &n_sub, Messages, &n_msg);
       break;
     case 'E':
-      m_erase();
+      m_erase(Subscribers, &n_sub, Messages, &n_msg, &max_ID);
       break;
     case 'U':
       s_unregister();
