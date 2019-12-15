@@ -108,7 +108,7 @@ int m_write(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg
 }
 
 int m_list(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg) {
-  int ID, i;
+  int ID, i, result;
   int n = 0;
   char name[20];
   printf("List\n\n");
@@ -118,7 +118,8 @@ int m_list(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg)
   }
   get_string(name, 15, "Receiver's name");
   for(i=0;i<(*n_sub);i++) {
-    if(Subscribers[i].name == name) {
+    result = strcmp(Subscribers[i].name, name);
+    if(result == 0) {
       n = 1;
       ID = Subscribers[i].identity;
     }
@@ -184,7 +185,7 @@ int m_erase(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg
   }
 
   //To remove message and reorder the table
-  //Above the messge to remove
+  //Above the message to remove
   for(i=0;i<del_index;i++) {
     copy_Messages[i].sender = Messages[i].sender;
     copy_Messages[i].receiver = Messages[i].receiver;
@@ -210,9 +211,75 @@ int m_erase(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg
   return 0;
 }
 
-int s_unregister() {
-    printf("You have chosen unregistering.\n");
-    return 0;
+int s_unregister(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg, int *max_ID) {
+  int i, subscriber;
+  int del_index = 0;
+  int s = 0;
+  int n_copy = 0;
+  tMessage copy_Messages[200];
+  tSubscriber copy_Subscribers[200];
+  
+    printf("Unregister\n\n");
+    if (*n_sub == 0) {
+    printf("No subscribers yet\n\n");
+    return -1;
+  }
+    subscriber = get_integer(*max_ID, "Subscriber's identity");
+
+    for(i=0;i<(*n_sub);i++) {
+      if (Subscribers[i].identity == subscriber) {
+	del_index = i;
+	s = 1;
+	break;
+      }
+    }
+    if(s == 0) {
+      printf("Subscriber not found\n\n");
+      return -1;
+    }
+
+    //Remove first all messages addressed to the subscriber
+    for(i=0;i<(*n_msg);i++) {
+      if (Messages[i].receiver != subscriber) {
+        copy_Messages[n_copy].sender = Messages[i].sender;
+        copy_Messages[n_copy].receiver = Messages[i].receiver;
+        strcpy(copy_Messages[n_copy].text, Messages[i].text);
+	n_copy++;
+      }
+    }
+    *n_msg = n_copy;
+     //To replace the original table with the copy
+    for(i=0;i<(*n_msg);i++) {
+      Messages[i].sender = copy_Messages[i].sender;
+      Messages[i].receiver = copy_Messages[i].receiver;
+      strcpy(Messages[i].text, copy_Messages[i].text);
+    }
+
+    //Now remove subscriber from table
+    //Above the subscriber to remove
+  for(i=0;i<del_index;i++) {
+    copy_Subscribers[i].identity = Subscribers[i].identity;
+    copy_Subscribers[i].count = Subscribers[i].count;
+    strcpy(copy_Subscribers[i].name, Subscribers[i].name);
+  }
+  //Below the subscriber to remove
+  for(i=(del_index+1);i<(*n_sub);i++) {
+    copy_Subscribers[i-1].identity = Subscribers[i].identity;
+    copy_Subscribers[i-1].count = Subscribers[i].count;
+    strcpy(copy_Subscribers[i-1].name, Subscribers[i].name);
+  }
+  (*n_sub)--;
+  
+  //To replace the original table with the copy
+  for(i=0;i<(*n_sub);i++) {
+    Subscribers[i].identity = copy_Subscribers[i].identity;
+    Subscribers[i].count = copy_Subscribers[i].count;
+    strcpy(Subscribers[i].name, copy_Subscribers[i].name);
+  }
+
+  printf("Subscriber unregistered\n\n");
+    
+  return 0;
 }
 
 int p_exit(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg) {

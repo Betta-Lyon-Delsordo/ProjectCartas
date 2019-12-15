@@ -73,7 +73,7 @@ int main(){
       m_erase(Subscribers, &n_sub, Messages, &n_msg, &max_ID);
       break;
     case 'U':
-      s_unregister();
+      s_unregister(Subscribers, &n_sub, Messages, &n_msg, &max_ID);
       break;
     default:
       printf("You have chosen an invalid option\n");
