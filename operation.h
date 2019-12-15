@@ -21,7 +21,7 @@ int m_init(tMessage *Messages, int *n_msg);
 int s_register(tSubscriber *Subscribers, int *n_sub, int *max_ID);
 int m_write(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg, int *max_ID);
 int m_list(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg);
-int m_erase();
+int m_erase(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg, int *max_ID);
 int s_unregister();
 int p_exit(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg);
 

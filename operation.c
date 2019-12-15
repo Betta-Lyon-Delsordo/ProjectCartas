@@ -136,8 +136,77 @@ int m_list(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg)
   return 0;
 }
 
-int m_erase() {
-  printf("You have chosen erasing.\n");
+int m_erase(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg, int *max_ID) {
+  int position, receiver, i;
+  int r = 0;
+  int del_index = 0;
+  tMessage copy_Messages[200];
+  printf("Erase\n\n");
+  if (*n_sub == 0) {
+    printf("No subscribers yet\n\n");
+    return -1;
+  }
+  receiver = get_integer(*max_ID, "Receiver's identity");
+
+  for (i=0;i<(*n_sub);i++) {
+    if (Subscribers[i].identity == receiver) {
+      if (Subscribers[i].count == 0) {
+	printf("No messages found");
+	return -1;
+	  }
+      else {
+	position = get_integer(Subscribers[i].count, "Message position");
+	(Subscribers[i].count)--;
+	//Remove message using code below
+      }
+      r = 1;
+      break;
+      }
+  }
+
+  if (r == 0) {
+    printf("Subscriber not found\n\n");
+    return -1;
+  }
+
+  // From here on will only execute if there is a message to remove
+  for(i=0;i<(*n_msg);i++) {
+    if (Messages[i].receiver == receiver) {
+      if (position == 1) {
+	//extract this one
+	del_index = i;
+	break;
+      }
+      else {
+	position--;
+      }
+    }
+  }
+
+  //To remove message and reorder the table
+  //Above the messge to remove
+  for(i=0;i<del_index;i++) {
+    copy_Messages[i].sender = Messages[i].sender;
+    copy_Messages[i].receiver = Messages[i].receiver;
+    strcpy(copy_Messages[i].text, Messages[i].text);
+  }
+  //Below the message to remove
+  for(i=(del_index+1);i<(*n_msg);i++) {
+    copy_Messages[i-1].sender = Messages[i].sender;
+    copy_Messages[i-1].receiver = Messages[i].receiver;
+    strcpy(copy_Messages[i-1].text, Messages[i].text);
+  }
+  (*n_msg)--;
+  
+  //To replace the original table with the copy
+  for(i=0;i<(*n_msg);i++) {
+    Messages[i].sender = copy_Messages[i].sender;
+    Messages[i].receiver = copy_Messages[i].receiver;
+    strcpy(Messages[i].text, copy_Messages[i].text);
+  }
+
+  printf("Message erased\n\n");
+  
   return 0;
 }
 
