@@ -85,7 +85,7 @@ int main(){
 
     
     
-  } while (confirm ("Are you sure you want to exit? (y/n): ") == 0);
+  } while (confirm ("Are you sure you want to exit the program? (y/n): ") == 0);
 
   p_exit(Subscribers, &n_sub, Messages, &n_msg);
 
