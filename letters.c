@@ -24,8 +24,10 @@ int main(){
   tMessage Messages[200];
   int n_msg = 0;
 
-  s_init(Subscribers, &n_sub, &max_ID);
+  if ( s_init(Subscribers, &n_sub, &max_ID)) {
+  //Make s_init return 0 if abonados.txt not found, then dont call m_init
   m_init(Messages, &n_msg);
+  }
   
 
 

@@ -22,6 +22,7 @@ int s_init(tSubscriber *Subscribers, int *n_sub, int *max_ID) {
       (*n_sub) ++;
     }
     fclose(file);
+    return 1;
   }
   
   return 0;
@@ -122,6 +123,7 @@ int m_list(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg)
     if(result == 0) {
       n = 1;
       ID = Subscribers[i].identity;
+      break;
     }
   }
   if(n == 0) {
@@ -277,6 +279,8 @@ int s_unregister(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *
     strcpy(Subscribers[i].name, copy_Subscribers[i].name);
   }
 
+  *max_ID = Subscribers[(*n_sub)-1].identity;
+
   printf("Subscriber unregistered\n\n");
     
   return 0;
@@ -290,7 +294,7 @@ int p_exit(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg)
   //Subscribers
   s_file = fopen("abonados.txt", "w");
   for (i=0; i<(*n_sub); i++) {
-    sprintf(buffer, "%d %d %s", Subscribers[i].identity, Subscribers[i].count, Subscribers[i].name);
+    sprintf(buffer, "%d %d %s\n", Subscribers[i].identity, Subscribers[i].count, Subscribers[i].name);
     fputs(buffer, s_file);
   }
   fclose(s_file);
@@ -298,7 +302,7 @@ int p_exit(tSubscriber *Subscribers, int *n_sub, tMessage *Messages, int *n_msg)
   //Messages
   m_file = fopen("mensajes.txt", "w");
   for (i=0; i<(*n_msg); i++) {
-    sprintf(buffer, "%d %d %s", Messages[i].sender, Messages[i].receiver, Messages[i].text);
+    sprintf(buffer, "%d %d %s\n", Messages[i].sender, Messages[i].receiver, Messages[i].text);
     fputs(buffer, m_file);
   }
   fclose(m_file);
