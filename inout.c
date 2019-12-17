@@ -88,12 +88,12 @@ void get_string(char *str, int max, char *msg) {
       fprintf(stdout, "Null length\n\n");
     }
 
-    else if (strlen(input) > max) {
+    else if (strlen(input) > (max+1)) {
       fprintf(stdout, "Excessive length\n\n");
     }
 
     else {
-      strcpy(str, input);
+      sscanf(input, "%s", str);
       incorrect = 0;
     }
 
@@ -105,8 +105,8 @@ void get_string(char *str, int max, char *msg) {
 }
 
 int get_integer(int max, char *msg) {
-  int n;
-  char buffer[256], *ptr, *errors;
+  int n, y;
+  char buffer[256], *errors, aux[256];
   int incorrect = 1;
  
   do {
@@ -114,13 +114,14 @@ int get_integer(int max, char *msg) {
      errors = fgets(buffer, 256, stdin);
      fprintf(stdout, "\n");
      if (errors != NULL) {
-       //convert string to integer
-       n = strtol(buffer, &ptr, 10); //returns 0 if non-integer input
+       y = sscanf(buffer, "%d%s", &n, aux);
+       if (y == 1) {
         if ((n <= max) && (n >= 1)) {
           incorrect = 0;
 	  break;
          }
-        }
+       }
+      }
      fprintf(stdout, "Wrong value\n\n");
   } while (incorrect);
  
@@ -140,6 +141,11 @@ void display_extended(tMessage aMessage) {
 }
 
 void display_short(tMessage aMessage) {
-  fprintf(stdout,"#%3d:%3d:%12s\n", aMessage.sender, aMessage.receiver, aMessage.text);
+  //fix to only print up to 12 chars for text, for loop
+  fprintf(stdout,"#%3d:%3d:", aMessage.sender, aMessage.receiver);
+  for(int i=0;(i<12) && (aMessage.text[i]!='\0'); i++) {
+    fprintf(stdout,"%c",aMessage.text[i]);
+    }
+  fprintf(stdout,"\n");
   return;
 }
