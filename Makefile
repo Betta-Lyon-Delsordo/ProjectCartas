@@ -1,7 +1,7 @@
 # ******************************************************
 #
 # Computer Programming I. Academic Year 2019-2020
-# Compilation of exercise #6 in the introduction to project session
+# Final Project for Betta and Eloy
 #
 # ******************************************************
 
@@ -9,10 +9,10 @@ CC   = gcc -Wall
 
 all: letters
 
-operation.o: operation.c operation.h
+operation.o: operation.c operation.h inout.h 
 	$(CC) -c operation.c
 
-inout.o: inout.c inout.h
+inout.o: inout.c inout.h operation.h
 	$(CC) -c inout.c
 
 letters: letters.c inout.o operation.o

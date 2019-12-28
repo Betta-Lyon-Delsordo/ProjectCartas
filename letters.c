@@ -5,12 +5,35 @@
 #include "operation.h"
 
 #define LINE_SIZE 60
-#define CHAR '#'
-#define TITLE "PROGRAMA"
+#define CHAR '+'
+#define TITLE "CARTAS"
 
 
-int main(){   //main function
-  char op;
+int main(){   
+  char op, buffer[256], rubbish[256];
+  int a;
+  int max_ID = 0;
+  
+  
+  //Setting up the Subscribers table
+  tSubscriber Subscribers[200];
+  int n_sub = 0;
+
+
+  //Setting up the Messages table
+  tMessage Messages[200];
+  int n_msg = 0;
+
+  if ( s_init(Subscribers, &n_sub, &max_ID)) {
+  //Make s_init return 0 if abonados.txt not found, then dont call m_init
+  m_init(Messages, &n_msg);
+  }
+  
+
+
+
+  
+  
   
   flat(CHAR, LINE_SIZE);  
   headline (TITLE, CHAR, LINE_SIZE);
@@ -19,9 +42,17 @@ int main(){   //main function
   do {
     
     do {
-    printf("\nEnter your selection:\nR) Register a new subscriber\nW) Write a message\nL) List the messages for a subscriber\nE) Erase a message\nX) Leave the program\n");
+    printf("\nR) Register a new subscriber\nW) Write a message\nL) List the messages for a subscriber\nE) Erase a message\nU) Unregister a subscriber\n\nX) Exit the program\n");
     printf("\nChoose an option: ");
-    scanf(" %c", &op);
+    fgets (buffer, 256, stdin);
+
+    
+    //fix for printing confirm() twice
+    a = sscanf(buffer, "%c %s", &op, rubbish);
+    if (a != 1) {
+      op = 'Z'; //To trigger invalid option
+    }
+      
     printf("\n");
 
     op = toupper(op);
@@ -32,27 +63,34 @@ int main(){   //main function
       break;
     
     case 'R':
-      s_register();
+      s_register(Subscribers, &n_sub, &max_ID);
       break;
     case 'W':
-      m_write();
+      m_write(Subscribers, &n_sub, Messages, &n_msg, &max_ID);
       break;
     case 'L':
-      m_list();
+      m_list(Subscribers, &n_sub, Messages, &n_msg);
       break;
     case 'E':
-      m_erase();
+      m_erase(Subscribers, &n_sub, Messages, &n_msg, &max_ID);
+      break;
+    case 'U':
+      s_unregister(Subscribers, &n_sub, Messages, &n_msg, &max_ID);
       break;
     default:
-      printf("You have chosen an invalid option.\n");
+      printf("You have chosen an invalid option\n");
       break;
     }
   } while (op != 'X' );
 
+    printf("Exit\n\n");
+
     
     
-  } while (confirm () == 0);
+  } while (confirm ("Are you sure you want to exit the program? (y/n): ") == 0);
+
+  p_exit(Subscribers, &n_sub, Messages, &n_msg);
 
   
-  return 0;    //exits main() with 0 value
+  return 0;   
 }
